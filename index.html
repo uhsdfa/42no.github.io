@@ -17,6 +17,12 @@
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" required><br><br>
 
+        <label for="activityId">Activity ID:</label>
+        <input type="number" id="activityId" name="activityId" required><br><br>
+
+        <label for="templateId">Template ID:</label>
+        <input type="number" id="templateId" name="templateId" required><br><br>
+
         <button type="submit">Отправить</button>
     </form>
 
@@ -27,12 +33,13 @@
             const score = document.getElementById('score').value;
             const time = document.getElementById('time').value;
             const name = document.getElementById('name').value;
-            const activityId = 8379545; // Замените на нужный ID
-            const templateId = 45; // Замените на нужный ID
+            const activityId = document.getElementById('activityId').value; // Получаем значение activityId
+            const templateId = document.getElementById('templateId').value; // Получаем значение templateId
 
             const url = "https://wordwall.net/leaderboardajax/addentry";
 
             const headers = {
+		Access-Control-Allow-Origin: *,
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
                 "Accept": "*/*",
                 "Accept-Encoding": "gzip, deflate, br, zstd",
