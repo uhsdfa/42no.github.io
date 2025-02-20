@@ -1,14 +1,85 @@
 <!DOCTYPE html>
-<html lang="en-US">
- 
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Today's Date</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Отправка данных на сервер</title>
 </head>
- 
 <body>
-   <script src="app.js"></script>
+    <h1>Отправка данных на сервер</h1>
+    <form id="scoreForm">
+        <label for="score">Score:</label>
+        <input type="number" id="score" name="score" required><br><br>
+
+        <label for="time">Time:</label>
+        <input type="number" id="time" name="time" required><br><br>
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+
+        <button type="submit">Отправить</button>
+    </form>
+
+    <script>
+        document.getElementById('scoreForm').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Предотвращаем перезагрузку страницы
+
+            const score = document.getElementById('score').value;
+            const time = document.getElementById('time').value;
+            const name = document.getElementById('name').value;
+            const activityId = 8379545; // Замените на нужный ID
+            const templateId = 45; // Замените на нужный ID
+
+            const url = "https://wordwall.net/leaderboardajax/addentry";
+
+            const headers = {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
+                "Accept": "*/*",
+                "Accept-Encoding": "gzip, deflate, br, zstd",
+                "Accept-Language": "ru-RU,ru;q=0.9",
+                "DNT": "1",
+                "Origin": "https://wordwall.net",
+                "Referer": "https://wordwall.net/ru/resource/8379545/%D0%BD%D0%B0%D1%80%D0%B5%D1%87%D0%B8%D0%B5",
+                "Sec-CH-UA": `"Not;A=Brand";v="24", "Chromium";v="128"`,
+                "Sec-CH-UA-Mobile": "?0",
+                "Sec-CH-UA-Platform": `"Windows"`,
+                "Sec-Fetch-Dest": "empty",
+                "Sec-Fetch-Mode": "cors",
+                "Sec-Fetch-Site": "same-origin",
+                "X-Requested-With": "XMLHttpRequest",
+                "X-Wordwall-Version": "1.0.9175.18113",
+                "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+            };
+
+            const body = new URLSearchParams({
+                score: score,
+                time: time,
+                name: name,
+                mode: 1,
+                activityId: activityId,
+                templateId: templateId
+            }).toString();
+
+            try {
+                const response = await fetch(url, {
+                    method: "POST",
+                    headers: headers,
+                    body: body,
+                    credentials: 'include' // Если нужно отправить куки
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json(); // Или response.text() в зависимости от ответа
+                console.log(data);
+                alert('Данные успешно отправлены!');
+            } catch (error) {
+                console.error('Ошибка:', error);
+                alert('Произошла ошибка при отправке данных.');
+            }
+        });
+    </script>
 </body>
- 
 </html>
